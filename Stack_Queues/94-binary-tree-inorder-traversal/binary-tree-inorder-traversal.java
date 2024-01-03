@@ -15,30 +15,31 @@
  */
 class Solution {
 
-    public void solve(TreeNode root, List<Integer> ans){
-        if(root == null) return;
-        solve(root.left, ans);
-        ans.add(root.val);
-        solve(root.right, ans);
-        return;
+    public TreeNode getRMN(TreeNode child, TreeNode root){
+        while(child.right != null && child.right != root){
+            child = child.right;
+        }
+        return child;
     }
 
     public List<Integer> inorderTraversal(TreeNode root) {
         List<Integer> ans = new ArrayList<>();
-        Stack<TreeNode> s = new Stack<>();
-        s.push(root);
-        while(!s.isEmpty()){
-            TreeNode t = s.peek();
-            TreeNode p = null;
-            if(t == null){
-                s.pop();
-                if(!s.isEmpty()){
-                    p = s.pop();
-                    ans.add(p.val);
-                    s.push(p.right);
+        if(root == null) return ans;
+        TreeNode temp = root;
+        while(temp != null){
+            if(temp.left != null){
+                TreeNode rmn = getRMN(temp.left, temp);
+                if(rmn.right == temp){
+                    ans.add(temp.val);
+                    temp = temp.right;
+                    rmn.right = null;
+                }else{
+                    rmn.right = temp;
+                    temp = temp.left;
                 }
             }else{
-                s.push(t.left);
+                ans.add(temp.val);
+                temp = temp.right;
             }
         }
         return ans;
