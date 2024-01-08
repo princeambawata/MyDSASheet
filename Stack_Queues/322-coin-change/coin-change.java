@@ -7,10 +7,10 @@ class Solution {
         int notTake = solve(coins, n-1, amount, dp);
         int take = Integer.MAX_VALUE;
         if(amount-coins[n] >= 0){
-            int f = solve(coins, n-1, amount-coins[n], dp);
-            int s = solve(coins, n, amount-coins[n], dp);
-            if(f != Integer.MAX_VALUE || s != Integer.MAX_VALUE){
-               take = Math.min(solve(coins, n-1, amount-coins[n], dp), solve(coins, n, amount-coins[n], dp)) + 1;
+            //int f = solve(coins, n-1, amount-coins[n], dp);
+            int temp = solve(coins, n, amount-coins[n], dp);
+            if(temp != Integer.MAX_VALUE){
+               take = solve(coins, n, amount-coins[n], dp) + 1;
             }
         }
         return dp[n][amount] = Math.min(notTake, take);
