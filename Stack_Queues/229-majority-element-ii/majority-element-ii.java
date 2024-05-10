@@ -1,33 +1,41 @@
 class Solution {
     public List<Integer> majorityElement(int[] nums) {
-        List<Integer> ans = new ArrayList<>();
         int n = nums.length;
-        int val1 = 0, val2 = 0, count1 = 0, count2 = 0;
+        List<Integer> ans = new ArrayList<>();
+        int n1 = -1;
+        int n2 = -1;
+        int c1=0, c2 = 0;
         for(int i=0;i<n;i++){
-            if(val1 == nums[i]){
-                count1++;
-            }else if(val2 == nums[i]){
-                count2++;
-            }else if(count1 == 0){
-                val1=nums[i];
-                count1++;
-            }else if(count2 == 0){
-                val2 = nums[i];
-                count2++;
+            if(c1 == 0 && nums[i] != n2){
+                n1 = nums[i];
+                c1++;
+            }else if(nums[i] == n1){
+                c1++;
+            }else if(c2 == 0){
+                n2 = nums[i];
+                c2++;
+            }else if(nums[i] == n2){
+                c2++;
             }else{
-                count1--;
-                count2--;
+                c1--;
+                c2--;
             }
         }
-        count1 = 0;
-        count2 = 0;
+        c1 = 0;
+        c2 = 0;
         for(int i=0;i<n;i++){
-            if(val1 == nums[i]){
-                count1++;
-            }else if(val2 == nums[i]) count2++;
+            if(nums[i] == n1){
+                c1++;
+            }else if(nums[i] == n2){
+                c2++;
+            }
         }
-        if(count1 > n/3) ans.add(val1);
-        if(count2 > n/3) ans.add(val2);
+        if(c1 > n/3){
+            ans.add(n1);
+        }
+        if(c2 > n/3){
+            ans.add(n2);
+        }
         return ans;
     }
 }
