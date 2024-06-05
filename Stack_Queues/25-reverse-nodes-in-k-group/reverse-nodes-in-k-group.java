@@ -20,19 +20,17 @@ class Solution {
     }
 
     public ListNode solve(ListNode head, int k, int l){
-        if(k>l) return head;
+        if(k > l) return head;
         ListNode curr = head;
         ListNode prev = null;
-        int i=0;
-        while(i<k){
+        for(int i=0;i<k;i++){
             ListNode cn = curr.next;
             curr.next = prev;
             prev = curr;
             curr = cn;
-            i++;
         }
         head.next = solve(curr, k, l-k);
-        return prev;
+        return prev; 
     }
 
     public ListNode reverseKGroup(ListNode head, int k) {
