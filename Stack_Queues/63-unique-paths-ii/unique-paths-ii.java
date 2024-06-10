@@ -1,23 +1,39 @@
 class Solution {
-
-    public int solve(int[][] arr, int m, int n, int[][] dp){
-        if(m<0 || n<0) return 0;
-        else if(arr[m][n] == 1) return 0;
-        else if(m == 0 && n == 0) return 1;
-        else if(dp[m][n] != -1) return dp[m][n];
-        return dp[m][n] = solve(arr, m-1, n, dp) + solve(arr, m, n-1, dp);
-    }
-
-    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
-        int m = obstacleGrid.length;
-        int n = obstacleGrid[0].length;
-        if(obstacleGrid[m-1][n-1] == 1 || obstacleGrid[0][0] == 1) return 0;
-        int[][] dp = new int[m][n];
-        for(int i=0;i<m;i++){
-            for(int j=0;j<n;j++){
-                dp[i][j] = -1;
+    public int uniquePathsWithObstacles(int[][] og) {
+        int n = og.length;
+        int m = og[0].length;
+        int dp[][] = new int[n][m];
+        if(og[0][0] == 1) return 0;
+        dp[0][0] = 1;
+        for(int j=1;j<m;j++){
+            if(og[0][j] != 1){
+                dp[0][j] = 1;
+            }else{
+                while(j<m){
+                    dp[0][j] = 0;
+                    j++;
+                }
             }
         }
-        return solve(obstacleGrid, m-1, n-1, dp);
+        for(int i=1;i<n;i++){
+            if(og[i][0] != 1){
+                dp[i][0] = 1;
+            }else{
+                while(i<n){
+                    dp[i][0] = 0;
+                    i++;
+                }
+            }
+        }
+        for(int i=1;i<n;i++){
+            for(int j=1;j<m;j++){
+                if(og[i][j] != 1){
+                    dp[i][j] = dp[i-1][j]+ dp[i][j-1]; 
+                }else{
+                    dp[i][j] = 0;
+                }
+            }
+        }
+        return dp[n-1][m-1];
     }
 }
