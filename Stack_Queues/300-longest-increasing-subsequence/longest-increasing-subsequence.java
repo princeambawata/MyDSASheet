@@ -13,13 +13,28 @@ class Solution {
 
     public int lengthOfLIS(int[] nums) {
         int n = nums.length;
-        int dp[][] = new int[n][n+1];
+        // int dp[][] = new int[n][n+1];
+        // for(int i=0;i<n;i++){
+        //     for(int j=0;j<=n;j++){
+        //         dp[i][j] = -1;
+        //     }
+        // }
+
+        // return solve(nums, 0, n, -1, dp);
+
+        int dp[] = new int[n];
         for(int i=0;i<n;i++){
-            for(int j=0;j<=n;j++){
-                dp[i][j] = -1;
+            dp[i] = 1;
+        }
+        int ans = 1;
+        for(int i=0;i<n;i++){
+            for(int prevI = 0;prevI<i;prevI++){
+                if(nums[prevI] < nums[i]){
+                    dp[i] = Math.max(dp[i], dp[prevI] + 1);
+                    ans = Math.max(ans, dp[i]);
+                }
             }
         }
-
-        return solve(nums, 0, n, -1, dp);
+        return ans;
     }
 }
