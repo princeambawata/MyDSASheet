@@ -1,30 +1,39 @@
 class Solution {
+    public int coinChange(int[] arr, int T) {
+        int n = arr.length;
 
-    public int solve(int coins[], int n, int amount, int[][] dp){
-        if(n == 0) return (amount%coins[0]) == 0 ? amount/coins[0] : Integer.MAX_VALUE;
-        else if(amount == 0) return 0; 
-        else if(dp[n][amount] != -1) return dp[n][amount];
-        int notTake = solve(coins, n-1, amount, dp);
-        int take = Integer.MAX_VALUE;
-        if(amount-coins[n] >= 0){
-            //int f = solve(coins, n-1, amount-coins[n], dp);
-            int temp = solve(coins, n, amount-coins[n], dp);
-            if(temp != Integer.MAX_VALUE){
-               take = solve(coins, n, amount-coins[n], dp) + 1;
+        // Create a 2D array to store results of subproblems
+        int dp[][] = new int[n][T + 1];
+
+        // Initialize the dp array for the first element of the array
+        for (int i = 0; i <= T; i++) {
+            if (i % arr[0] == 0)
+                dp[0][i] = i / arr[0];
+            else
+                dp[0][i] = (int) Math.pow(10, 9);
+        }
+
+        // Fill the dp array using dynamic programming
+        for (int ind = 1; ind < n; ind++) {
+            for (int target = 0; target <= T; target++) {
+                int notTake = 0 + dp[ind - 1][target];
+                int take = (int) Math.pow(10, 9);
+
+                // If the current element is less than or equal to the target, calculate 'take'
+                if (arr[ind] <= target)
+                    take = 1 + dp[ind][target - arr[ind]];
+
+                // Store the minimum result in the dp array
+                dp[ind][target] = Math.min(notTake, take);
             }
         }
-        return dp[n][amount] = Math.min(notTake, take);
-    }
 
-    public int coinChange(int[] coins, int amount) {
-        int n = coins.length;
-        int[][] dp = new int[n][amount+1];
-        for(int i=0;i<n;i++){
-            for(int j=0;j<=amount;j++){
-                dp[i][j] = -1;
-            }
-        }
-        int ans = solve(coins, n-1, amount, dp);
-        return ans == Integer.MAX_VALUE ? -1 : ans;
+        // Get the minimum number of elements needed for the target sum
+        int ans = dp[n - 1][T];
+
+        // If it's not possible to achieve the target sum, return -1
+        if (ans >= (int) Math.pow(10, 9))
+            return -1;
+        return ans;
     }
 }
