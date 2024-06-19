@@ -12,7 +12,7 @@ class Solution {
                 int notTake = dp[i-1][j];
                 int take = 0;
                 if(j-coins[i] >= 0){
-                    take = dp[i][j-coins[i]];
+                    take = Math.max(dp[i-1][j-coins[i]], dp[i][j-coins[i]]);
                 }
                 dp[i][j] = take + notTake;
             }
