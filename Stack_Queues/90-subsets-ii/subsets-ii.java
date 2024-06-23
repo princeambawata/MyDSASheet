@@ -6,7 +6,6 @@ class Solution {
             for(Integer x : temp){
                 t.add(x);
             }
-            Collections.sort(t);
             s.add(t);
             return;
         }
@@ -18,6 +17,7 @@ class Solution {
     }
 
     public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
         Set<List<Integer>> s = new HashSet<>();
         List<List<Integer>> ans = new ArrayList<>();
         int n = nums.length;
