@@ -27,7 +27,7 @@ class Solution {
         while(low <= high){
             int mid = (low + high) >> 1;
             if(isValidWeightCapacity(weights, mid, days, n)){
-                ans = mid;
+                ans = Math.min(ans, mid);
                 high = mid-1;
             }else{
                 low = mid+1;
