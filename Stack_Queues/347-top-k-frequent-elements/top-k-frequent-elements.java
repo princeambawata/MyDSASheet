@@ -1,43 +1,35 @@
 class Solution {
 
-    class Pair{
-        int val;
+    class Pair implements Comparable<Pair>{
+        int x;
         int freq;
 
-        Pair(int v, int f){
-            this.val = v;
-            this.freq = f;
+        Pair(int x, int y){
+            this.x = x;
+            this.freq = y;
+        }
+
+        @Override 
+        public int compareTo(Pair p){
+            return p.freq-this.freq;
         }
     }
 
     public int[] topKFrequent(int[] nums, int k) {
-        Map<Integer, Integer> m = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();
         int n = nums.length;
         for(int i=0;i<n;i++){
-            if(m.containsKey(nums[i])){
-                m.put(nums[i], m.get(nums[i]) + 1);
-            }else{
-                m.put(nums[i], 1);
-            }
+            int key = nums[i];
+            map.put(key, map.getOrDefault(key, 0) + 1);
         }
-        PriorityQueue<Pair> pq = new PriorityQueue<>((a,b)->{
-            return Integer.compare(a.freq,b.freq);
-        });
-        for(Map.Entry<Integer, Integer> e : m.entrySet()){
-            if(pq.size()<k){
-                pq.offer(new Pair(e.getKey(), e.getValue()));
-            }else{
-                if(pq.peek().freq < e.getValue()){
-                    pq.poll();
-                    pq.offer(new Pair(e.getKey(), e.getValue()));
-                }
-            }
+        List<Pair> l = new ArrayList<>();
+        for(Map.Entry<Integer, Integer> entry : map.entrySet()){
+            l.add(new Pair(entry.getKey(), entry.getValue()));
         }
-        int ans[] = new int[k];
-        int i=0;
-        while(!pq.isEmpty()){
-            Pair p = pq.poll();
-            ans[i++] = p.val;
+        Collections.sort(l);
+        int[] ans = new int[k];
+        for(int i=0;i<k;i++){
+            ans[i] = l.get(i).x;
         }
         return ans;
     }
